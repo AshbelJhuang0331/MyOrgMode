@@ -1,0 +1,405 @@
+#+TITLE: My Org-mode Cheat Sheet
+#+DATE: <2017-07-20 Thu 18:09>
+#+AUTHOR: 莊傳傑
+#+EMAIL: s8906108@gmail.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:t p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+CREATOR: Emacs 25.1.1 (Org mode 8.2.10)
+#+DESCRIPTION: 關於 Org-mode 的各個功能簡要闡述
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: zh_TW
+#+SELECT_TAGS: export
+#+STARTUP: indent
+#+OPTIONS: toc:1 # 1 代表輸出 1 層的目錄, 2 代表輸出 2 層的目錄, 依此類推。 nil 則是輸出時不顯示目錄。
+# #+SETUPFILE: ~/Developer/Org/org-html-themes/setup/theme-readtheorg-local.setup
+
+* 開始之前
+內文敘述中有不少快捷鍵敘述，因此先於開頭定義
+
+當有兩個以上按鍵時，開頭的大寫字母分別表示下列按鍵
+- C : Ctrl
+- M : Alt
+- S : Shift
+- RET : Enter / return
+
+EX: 
+- M-x : Alt + x
+- C-c : Ctrl + c
+
+* '*'作為大綱、標題亦可視為樹
+'*'越多代表層級越低，最多支援到 10 個
+** 折疊大綱、標題
+- S-TAB 循環切換整個文件的大綱狀態（折疊、打開下一層級、打開全部）
+- TAB 循環折疊或展開光標所在之大綱
+** 大綱、標題間移動
+- C-c C-n/p : 下個大綱/上個標題
+- C-c C-f/b : 前往 下一個同個層級的標題/上一個同個層級的標題
+- C-c C-u : 跳到上一層級標題
+- C-c C-j : 切換為大綱瀏覽狀態
+** 基於大綱、標題的編輯
+- M-RET : 插入同級標題
+- M-S-RET : 插入一個同級TODO標題/於無序條列是則是插入一個帶有複選框的條目
+- M-LEFT/RIGHT : 將此層級標題升級/降級
+- M-UP/DOWN : 將此層級標題上移/下移
+- C-c * : 將本行設為標題/正文
+- C-c C-w : 將子樹或區域移動到另一標題（可以跨 buffer ）
+- C-x n s/w : 只顯示當前子樹/返回顯示所有樹
+- C-c C-x b : 在新緩衝區顯示當前子樹
+- C-c / : 只列出包含搜尋結果的大綱並且 highlight
+- C-c C-c : 取消 highlight
+** 關於自動縮排
+若想要文件自動縮排可於文件可於文件開頭添加
+#+BEGIN_SRC org
+  #+STARTUP: indent
+#+END_SRC
+如果希望打開所有 org 文件都是縮排過的可於 init.el 設定檔中加入以下設定
+#+BEGIN_SRC emacs-lisp
+  (setq org-startup-indented t)
+#+END_SRC
+
+* 條列式項目
+** 無序條列 :: -,+,*
+- 這是無序項目一 :: 項目定義
+- 這是無序項目二 :: 利用 "::" 將描述內容與項目分開
+ + 項目二的子項目一
+  * 項目二的子項目一的子項目一
+ + 項目二的子項目二
+** 有序條列 :: 1. or 1)
+1. 這是有序項目一 :: 項目定義
+ 1) 子項目一
+ 2) 子項目二
+2. 這是有序項目二
+
+* 文句相關應用
+- *粗體*
+- +刪除線+
+- _畫底線_
+- /斜體/
+- =等寬字=
+- ~verbatim~
+- e^iπ + 1 = 0
+- ∑a_n
+
+* 超連結範例
+** 一般外部連結
+連結直接貼上即可
+- http://www.google.com
+
+** 文字連結
+#+BEGIN_SRC org
+  [[link address][description]]
+
+  [[https://www.gnu.org/software/emacs/][GNU Emacs]]
+#+END_SRC
+EX:
+- [[http://www.gnu.org/software/emacs/][GNU Emacs]]
+
+** 其他連結
+- file:~/.emacs.d/init.el::24
+- mailto:somebody@email.net
+
+* 顯示圖片範例
+- 輸入檔案所在位置連結 ex: =file:your/image/file/path.xxx=
+- 按下 M-x 後，輸入 org-toggle-inline-images 來顯示圖片
+- 或著按下 C-c C-x C-v 亦可顯示內容圖片
+EX:
+#+BEGIN_SRC org
+  file:org-mode-unicorn-logo.png
+#+END_SRC
+
+file:org-mode-unicorn-logo.png
+
+* 表格
+- 使用 | 作為表格分隔
+- TAB 在表格內前往下個內容區域
+- S-TAB 在表格內前往上個內容區域
+- 輸入 |- 再按下 TAB 可以在產生分隔線，like: |------+------+------|
+- 輸入好欄位標題後按下 C-c RET or C-c | 即可產生表格，差別在於 C-C | 可以再給予列述以及行數
+- 表格填入後可以使用 C-c C-c 更新/調整表格
+- C-c ? 可得知該欄位座標資訊, @ 代表(橫)列 $ 代表(直)行, 所以 @2 代表第二列, $3 代表第三行, @1$3 代表第一列第三行的內容
+
+| Mission                                          | Description                                                      | Deadline |
+|--------------------------------------------------+------------------------------------------------------------------+----------|
+| Integrate original SDK mission to Offer Wall SDK | Research how to integrate original SDK mission to Offer Wall SDK  | Not yet. |
+| Integrate Appsflyer SDK                          | Integrate Appsflyer SDK to iOS App                               | Not yet. |
+| Localize App                                     | Make iOS App localized                                           | Not yet. |
+
+
+- 在 #+TBLFM: 可以使用類似試算表或 EXCEL 算式，寫完後使用 C-c C-c (ctrl + c 後 ctrl +c) 更新表格 ex: #+TBLFM: $1 = vmean($1..$2)
+- 多個規則或算式則用::分開 ex: #+TBLFM: $1 = vmean($1..$2)::$5 = $3 + $4
+
+| Last Month Flow | This Month Flow | Two Month Sum Flow | Month Increment Flow |
+|-----------------+-----------------+--------------------+----------------------|
+|          250000 |          300000 |             550000 |                  0.2 |
+|          260000 |          310000 |             570000 |           0.19230769 |
+|          270000 |          250000 |             520000 |         -0.074074074 |
+#+TBLFM: $3 = ($1 + $2) :: $4 = ($2 - $1) / $1
+
+
+* 註解(Comments)
+- "#" 視為單行的註解
+- 使用 C-c ; 註解整個區域
+- 在 =#+BEGIN_COMMENT= 以及 =#+END_COMMENT= 中的內文視為註解區域
+
+EX:
+#+BEGIN_SRC org
+
+  # 單行註解不被輸出
+
+  #+BEGIN_COMMENT
+  指定區塊內不被輸出
+  第二行
+  第三行
+  #+END_COMMENT
+
+   **** COMMENT 利用 C-c ; 註解整個區域
+   此層級下的內容
+   皆不會被輸出
+
+#+END_SRC
+
+
+* 標籤(tag)
+- 在標題使用 C-c C-c 來加上 tag
+- 正文中可以使用 C-c C-q 加上 tag
+- tag 具有繼承性，即子標題及其內容會繼承上一層級之標籤
+- C-c \ 可以尋找某個 tag 下的所有項目
+- C-c / 可以尋找特定的項目，提供多個搜尋方式，EX: m : 桉樹狀結構顯示， / : Regular Expression 搜尋
+- 若要整個文件都含有某個標籤，可於文件開頭添加 #+FILETAGS::tag1:tag2:tag3:
+** EX: Android 							    :android:
+Android Studio
+** EX: iOS 							  :iOS:MacOS:
+XCode
+** EX: Cross Platform                                           :android:iOS:
+- Xamarin
+- Unity
+
+* TODO and Org-Capture
+** TODO List
+- 可以增加其他的設定 ex: #+TODO: TODO(t) WAIT(w@/!) | DONE(d!) CANCELED(c@)
+- 使用 S-LEFT / DONE 切換 TODO/DONE/無狀態
+- 使用 S-UP / S-DOWN 來增加/減少 priority
+- 以 "- [ ]" 開頭的列會被認為是複選框，可以使用 M-S-RET 插入含有複選框之項目
+- 使用 M-s RET 增加子項目
+- 使用 C-c C-c 改變複選框的狀態
+- 使用 C-c C-s 加入日程規劃
+- 使用 C-c C-d 加入 deadline
+** Org-Capture
+常用於記錄臨時想到的事情
+於 init.el 檔案中相關設置如下
+#+BEGIN_SRC emacs-lisp
+  ;; Quickly use C-c r to take note
+  ;; (global-set-key (kbd "C-c r") 'org-capture)
+
+  ;; Setup capture template
+  (setq org-capture-templates
+        '(("t" "TODO" entry (file+headline "" "Tasks") "* TODO %?\n %i\n")
+          ("n" "NOTE" entry (file+headline "" "Tasks") "* NOTE %?\n %i\n %a")))
+
+#+END_SRC
+- M-x org-capture RET 開啟 org-capture 選擇 template 記錄事項
+
+
+*** EX: Task
+**** TODO [#A] work out
+**** DONE [#B] buy green tea
+**** TODO TASKS[1/4]
+      SCHEDULED: <2016-12-14 Wed>
+- [ ] Integrate origianl SDK mission to Offer Wall SDK
+- [ ] Integrate Appsflyer SDK to iOS App
+- [ ] Localize iOS App for multilanguage
+- [X] Modify gifts redeem to original
+
+**** TODO Modify gifts redeem to original
+      DEADLINE: <2016-12-09 Fri>
+
+
+* 記錄做事的時間
+- 使用 C-c C-x C-i 開始計時
+- 使用 C-c C-x C-o 結束計時
+- 使用 C-u C-c C-x C-i 來看現在計時
+
+#+BEGIN_COMMENT
+EX: Test Timer
+    CLOCK: [2016-12-14 Wed 16:21]--[2016-12-14 Wed 16:22] =>  0:01
+    CLOCK: [2016-12-14 Wed 16:18]--[2016-12-14 Wed 16:21] =>  0:03
+#+END_COMMENT
+
+* org-agenda 追蹤狀況
+- 使用 M-x org-agenda 選擇想要顯示的類型
+
+* 插入程式碼
+如果沒有相關使用需求此段落可跳過
+** Code Generate
+- 輸入 <s 後按下 TAB 插入程式碼的樣板
+- 使用 C-c ' 編輯程式碼/結束編輯程式碼
+- :exports code / results / both 分別代表文件在匯出時呈現的方式，純 code / 結果 / code加上結果
+
+EX:
+#+BEGIN_SRC python :exports code
+  import cgitb
+  import json
+
+  cgitb.enable()
+
+  testJson = {'id': 1, 'firstName': 'Ashbel', 'lastName': 'Jhuang', 'gender': 'male'}
+
+  print "Content-Type: text/plain;charset=utf-8"
+  print
+  print json.dumps(testJson)
+#+END_SRC
+
+#+RESULTS:
+: None
+
+- 使用 #+INCLUDE: "file path" 將在他處的檔案包含顯示進來
+- 使用 C-c ' 前往 include 的檔案
+- 將外部檔案程式碼內容顯示在此文件中 #+INCLUDE: "~/.emacs.d/init.el" src emacs-lisp
+- 將外部檔案的內容 19 - 33 行包到此文件中 #+INCLUDE: "~/.emacs.d/init.el" :lines "19-33" 
+- 將外部檔案的內容到 33 行前包到此文件中 #+INCLUDE: "~/.emacs.d/init.el" :lines "-33" 
+- 將外部檔案的內容從 19 行開始包到此文件中 #+INCLUDE: "~/.emacs.d/init.el" :lines "19-" 
+EX:
+
+=#+INCLUDE: "~/.emacs.d/init.el" src emacs-lisp :lines "19-33"=
+
+#+INCLUDE: "~/.emacs.d/init.el" src emacs-lisp :lines "19-33"
+
+** Code Evaluate
+- 使用 C-c C-c 進行 Code Evaluate
+- 使用 M-x org-babel-tangle 產出程式檔案
+
+#+BEGIN_SRC sh :tangle ~/Developer/Org/today.sh
+  echo "Today is $(date)"
+#+END_SRC
+
+#+RESULTS:
+: Today is 2016年12月15日 週四 14時52分53秒 CST
+
+*** ditaa 繪圖
+#+BEGIN_SRC ditaa :file ~/Developer/Org/testDitaa.png :exports code
+  +------------+
+  |            |
+  |Hello World!|
+  |            |
+  +------------+
+#+END_SRC
+# 未成功
+
+*** Graphviz 繪圖
+#+BEGIN_SRC dot :file ~/Developer/Org/testGraphviz.png :exports both
+  digraph G{
+     {a b c} -> {d e f}
+  }
+#+END_SRC
+
+*** PlantUML
+#+BEGIN_SRC plantuml :file picts/plantuml-example.png :exports both
+class Dummy {
+  String data
+  void methods()
+}
+
+class Flight {
+   flightNumber : Integer
+   departureTime : Date
+}
+#+END_SRC
+
+* 使用 GnuPG 加密內容
+如無相關使用需求可跳過此段落
+** 於 init.el 檔案中相關設置如下
+注意：請先確認系統有安裝 GnuPG
+#+BEGIN_SRC emacs-lisp
+  ;; crypt
+  (require 'org-crypt)
+
+  ;; 當被加密的部份要存入硬碟時，自動加密回去
+  (org-crypt-use-before-save-magic)
+
+  ;; 設定要加密的 tag 標籤為 need_to_encrypt
+  (setq org-crypt-tag-matcher "need_to_encrypt")
+
+  ;; 避免 need_to_encrypt 這個 tag 被子項目繼承 造成重複加密
+  ;; (但是子項目還是會被加密喔)
+  (setq org-tags-exclude-from-inheritance (quote ("need_to_encrypt")))
+
+  ;; 用於加密的 GPG 金鑰
+  ;; 可以設定任何 ID 或是設成 nil 來使用對稱式加密 (symmetric encryption)
+  (setq org-crypt-key nil)
+#+END_SRC
+
+# 尚未成功
+*** EX：ID/PW                                             :need_to_encrypt:
+
+ID: abcdefghij \\
+PW: 1234567890
+
+* 輸出
+- 使用 C-c C-e 或 M-x org-export-dispatch RET 呼叫輸出選單
+- 使用 C-c C-e # 插入 template
+
+#+BEGIN_COMMENT
+以下為 C-c C-e # default RET 插入之 template
+
+#+TITLE: demoOrgMode
+#+DATE: <2016-12-14 Wed>
+#+AUTHOR: 莊傳傑
+#+EMAIL: ashbeljhuang@zhuangciedeMini
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:t p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+CREATOR: Emacs 25.1.1 (Org mode 8.2.10)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+END_COMMENT
+
+** 支援的輸出格式
+| Export Form   | Export Hot Key | Preview Hot Key | Remark                                                                                                |
+|---------------+----------------+-----------------+-------------------------------------------------------------------------------------------------------|
+| ASCII         |                |                 |                                                                                                       |
+| Beamer        |                |                 |                                                                                                       |
+| HTML          | C-c C-e h h    | C-c C-e h H     | =#+HTML_HEAD=:用來增加 javascript 或是 css, =#+ATTR_HTML=: 可以為 table 或是 src block 增加額外的設置 |
+| iCalendar     |                |                 |                                                                                                       |
+| LaTeX         | C-c C-e l l    | C-c C-e l L     | =#+LATEX_CLASS=: 選擇預先定義好的 LaTeX 樣板, =#+LATEX_HEADER=: 用來增加額外的 LaTeX 套件             |
+| Man           |                |                 |                                                                                                       |
+| Markdown      | C-c C-e m m    | C-c C-e m M     |                                                                                                       |
+| ODT           |                |                 |                                                                                                       |
+| Publishing    |                |                 |                                                                                                       |
+| Texinfo       |                |                 |                                                                                                       |
+| Confluence    |                |                 |                                                                                                       |
+| Deck.js       |                |                 |                                                                                                       |
+| Freemind      |                |                 |                                                                                                       |
+| Groff         |                |                 |                                                                                                       |
+| Koma Scrlttr2 |                |                 |                                                                                                       |
+| RSS           |                |                 |                                                                                                       |
+| S5            |                |                 |                                                                                                       |
+| Taskjuggler   |                |                 |                                                                                                       |
+| PDF           | C-c C-e l p    |                 |                                                                                                       |
+
+
+** 一些關於輸出的參考資料
+*** HTML5 Slide
+- Epresent: http://orgmode.org/worg/org-tutorials/non-beamer-presentations.html#sec-2
+- S5: http://orgmode.org/worg/org-tutorials/non-beamer-presentations.html#sec-3
+- org-tree-slide: http://orgmode.org/worg/org-tutorials/non-beamer-presentations.html#sec-4
+- org-reveal: http://orgmode.org/worg/org-tutorials/non-beamer-presentations.html#sec-6
+- org-ioslide: https://github.com/coldnew/org-ioslide
+
+*** Blogging tools
+- o-blog: http://renard.github.com/o-blog
+- Jekyll with org-mode: http://orgmode.org/worg/org-tutorials/org-jekyll.html
+- Octopress with org-mode: https://github.com/tomalexander/orgmode-octopress
+- Projects: http://orgmode.org/manual/Publishing.html
+- Blorgit: http://orgmode.org/worg/blorgit.html
+- *org2blog: https://github.com/punchagan/blog-files* 大力推薦此工具來撰寫 blog
+
+* 其他
+** 可能會用上的熱鍵
+- c-u c-u c-u TAB 展開所有項目
